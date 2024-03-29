@@ -3,9 +3,53 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - WEB", "1 - WEB", "{AE24F00B-BE07-46D5-AF51-99C308F04045}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{EBAEFC4F-7157-46C8-B5F7-A06CCB538EDF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{857D6B55-1167-40B7-B883-82007F55D265}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infrastructure", "4 - Infrastructure", "{2CB78475-F8BA-4D5E-AF9E-E979880D48DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutenticacaoJWT.Application", "AutenticacaoJWT.Application\AutenticacaoJWT.Application.csproj", "{3474DA3B-C73B-4DB0-8E66-D6646F41BBBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutenticacaoJWT.Domain", "AutenticacaoJWT.Domain\AutenticacaoJWT.Domain.csproj", "{5C3EF02D-32DC-41FF-83F2-ED6FA3BE36D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutenticacaoJWT.Infrastructure", "AutenticacaoJWT.Infrastructure\AutenticacaoJWT.Infrastructure.csproj", "{0991889E-A092-4ADA-B29F-41D810EB98EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutenticacaoJWT.API", "AutenticacaoJWT.API\AutenticacaoJWT.API.csproj", "{52E35381-6C8E-4ABF-9B01-B6B80CC6B05E}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3474DA3B-C73B-4DB0-8E66-D6646F41BBBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3474DA3B-C73B-4DB0-8E66-D6646F41BBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3474DA3B-C73B-4DB0-8E66-D6646F41BBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3474DA3B-C73B-4DB0-8E66-D6646F41BBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C3EF02D-32DC-41FF-83F2-ED6FA3BE36D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3EF02D-32DC-41FF-83F2-ED6FA3BE36D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3EF02D-32DC-41FF-83F2-ED6FA3BE36D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3EF02D-32DC-41FF-83F2-ED6FA3BE36D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0991889E-A092-4ADA-B29F-41D810EB98EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0991889E-A092-4ADA-B29F-41D810EB98EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0991889E-A092-4ADA-B29F-41D810EB98EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0991889E-A092-4ADA-B29F-41D810EB98EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E35381-6C8E-4ABF-9B01-B6B80CC6B05E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E35381-6C8E-4ABF-9B01-B6B80CC6B05E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E35381-6C8E-4ABF-9B01-B6B80CC6B05E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E35381-6C8E-4ABF-9B01-B6B80CC6B05E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3474DA3B-C73B-4DB0-8E66-D6646F41BBBC} = {EBAEFC4F-7157-46C8-B5F7-A06CCB538EDF}
+		{5C3EF02D-32DC-41FF-83F2-ED6FA3BE36D0} = {857D6B55-1167-40B7-B883-82007F55D265}
+		{0991889E-A092-4ADA-B29F-41D810EB98EB} = {2CB78475-F8BA-4D5E-AF9E-E979880D48DC}
+		{52E35381-6C8E-4ABF-9B01-B6B80CC6B05E} = {AE24F00B-BE07-46D5-AF51-99C308F04045}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14783219-9EED-4DE7-949A-7ED30011B518}
