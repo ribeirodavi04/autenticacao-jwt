@@ -15,6 +15,7 @@ namespace AutenticacaoJWT.Infra.Data.Context
         }
 
         DbSet<User> Users { get; set; }
+     
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseNpgsql("Host=127.0.0.1; Port=5432; Username=postgres; Password=admin; Database=AutenticacaoJWTDB;");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,7 +24,7 @@ namespace AutenticacaoJWT.Infra.Data.Context
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("tb_user"); 
+                entity.ToTable("Users"); 
                 entity.HasKey(e => e.Id); 
                 entity.Property(e => e.Id).HasColumnName("Id").IsRequired(); 
                 entity.Property(e => e.Name).HasColumnName("Name"); 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,7 +16,7 @@ namespace AutenticacaoJWT.Infra.Data.Migrations
             columns: table => new
             {
                 Id = table.Column<int>(nullable: false)
-                    .Annotation("SqlServer:Identity", "1, 1"),
+                    .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
                 Name = table.Column<string>(nullable: true),
                 Email = table.Column<string>(nullable: true),
                 Password = table.Column<string>(nullable: true)
@@ -23,7 +24,7 @@ namespace AutenticacaoJWT.Infra.Data.Migrations
             constraints: table =>
             {
                 table.PrimaryKey("PK_Users", x => x.Id);
-            });
+            }); ;
         }
 
         /// <inheritdoc />
