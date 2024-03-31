@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AutenticacaoJWT.Application\AutenticacaoJWT.Application.csproj" />
+    <ProjectReference Include="..\AutenticacaoJWT.Domain\AutenticacaoJWT.Domain.csproj" />
+    <ProjectReference Include="..\AutenticacaoJWT.Infrastructure\AutenticacaoJWT.Infra.Data.csproj" />
+  </ItemGroup>
+
+</Project>
