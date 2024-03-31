@@ -9,11 +9,11 @@ namespace AutenticacaoJWT.Domain.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        TEntity GetById(int id);
-        IEnumerable<TEntity> GetAll();
-        void Create(TEntity entity);
-        void Update(TEntity entity);
-        void Remove(TEntity entity);
+        Task<TEntity> GetById(int id);
+        Task<IEnumerable<TEntity>> GetAll();
+        Task<TEntity> Create(TEntity entity);
+        Task<TEntity> Update(TEntity entity);
+        Task<TEntity> Remove(TEntity entity);
         void Save();
         void Dispose();
 

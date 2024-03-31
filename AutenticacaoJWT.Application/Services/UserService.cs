@@ -24,15 +24,15 @@ namespace AutenticacaoJWT.Application.Services
 
         public async Task<List<UserDTO>> GetAll()
         {
-            var users = _userRepository.GetAll();
+            var users = await _userRepository.GetAll();
             return _mapper.Map<List<UserDTO>>(users);
         }
 
-        public async Task Add(UserDTO userDTO)
+        public async Task<UserDTO> AddUser(UserDTO userDTO)
         {
             User user = _mapper.Map<User>(userDTO);
-            _userRepository.Create(user);
-            _userRepository.Save();
+            var newUser = await _userRepository.Create(user);
+            return _mapper.Map<UserDTO>(newUser);
         }
     }
 }

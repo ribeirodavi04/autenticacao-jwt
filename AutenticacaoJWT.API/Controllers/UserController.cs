@@ -1,5 +1,7 @@
-﻿using AutenticacaoJWT.Application.DTO;
+﻿using AutenticacaoJWT.API.Models;
+using AutenticacaoJWT.Application.DTO;
 using AutenticacaoJWT.Application.Interfaces;
+using AutenticacaoJWT.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +12,12 @@ namespace AutenticacaoJWT.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IAuthenticate _authenticateService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IAuthenticate authenticate)
         {
             _userService = userService;
+            _authenticateService = authenticate;
         }
 
         [HttpGet]
@@ -32,14 +36,26 @@ namespace AutenticacaoJWT.API.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Post([FromBody] UserDTO userDTO)
+        [HttpPost("register")]
+        public async Task<ActionResult<UserToken>> RegisterUser([FromBody] UserDTO userDTO)
         {
             if (userDTO == null)
                 return BadRequest("Invalid Data");
 
-            await _userService.Add(userDTO);
-            return Ok();
+            var emailExists = await _authenticateService.UserExists(userDTO.Email);
+
+            if (emailExists == true)
+                return BadRequest("Email already exists");
+
+            var user = await _userService.AddUser(userDTO);
+            if (user == null)
+                return BadRequest("Error while registering");
+
+            var token = _authenticateService.GenerateToken(user.Id, user.Email);
+            return new UserToken
+            {
+                Token = token,
+            };
         }
     }
 }

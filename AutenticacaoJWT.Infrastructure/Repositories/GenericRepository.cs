@@ -21,29 +21,35 @@ namespace AutenticacaoJWT.Infra.Data.Repositories
         }
 
 
-        public void Create(TEntity entity)
+        public async Task<TEntity> Create(TEntity entity)
         {
             _entities.Add(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return _entities.ToList();
+            return await _entities.ToListAsync();
         }
 
-        public TEntity GetById(int id)
+        public async Task<TEntity> GetById(int id)
         {
-            return _entities.Find(id);
+            return await _entities.FindAsync(id);
         }
 
-        public void Remove(TEntity entity)
+        public async Task<TEntity> Remove(TEntity entity)
         {
             _entities.Remove(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public void Update(TEntity entity)
+        public async Task<TEntity> Update(TEntity entity)
         {
             _entities.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public void Save()

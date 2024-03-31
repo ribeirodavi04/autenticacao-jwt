@@ -6,7 +6,8 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbSystem.IO.InvalidDataException: 'Failed to load configuration from file 'C:\Users\davi2\Documents\Projetos\AutenticacaoJWT\AutenticacaoJWT.API\appsettings.json'.'
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -1,5 +1,6 @@
 ﻿using AutenticacaoJWT.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,13 @@ namespace AutenticacaoJWT.Infra.Data.Context
 {
     public class ContextApp : DbContext
     {
+        private readonly IConfiguration _configuration;
+
         public ContextApp(DbContextOptions<ContextApp> options) : base(options) 
         {
         }
 
-        DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
      
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseNpgsql("Host=127.0.0.1; Port=5432; Username=postgres; Password=admin; Database=AutenticacaoJWTDB;");
 
