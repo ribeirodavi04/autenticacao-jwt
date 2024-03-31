@@ -13,13 +13,14 @@ namespace AutenticacaoJWT.Infra.Data.Context
     {
         private readonly IConfiguration _configuration;
 
-        public ContextApp(DbContextOptions<ContextApp> options) : base(options) 
+        public ContextApp(DbContextOptions<ContextApp> options, IConfiguration configuration) : base(options) 
         {
+            _configuration = configuration;
         }
 
         public DbSet<User> Users { get; set; }
      
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseNpgsql("Host=127.0.0.1; Port=5432; Username=postgres; Password=admin; Database=AutenticacaoJWTDB;");
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseNpgsql(_configuration.GetConnectionString("AutenticacaoJWTDB"));
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

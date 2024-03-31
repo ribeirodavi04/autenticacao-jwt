@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutenticacaoJWT.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace AutenticacaoJWT.Domain.Interfaces
         Task<bool> AuthenticateAsync(string email, string password);
         Task<bool> UserExists(string email);
         public string GenerateToken(int id, string email);
+        Task<User> GetUserByEmail(string email);
     }
 }

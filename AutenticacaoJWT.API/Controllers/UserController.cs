@@ -2,6 +2,7 @@
 using AutenticacaoJWT.Application.DTO;
 using AutenticacaoJWT.Application.Interfaces;
 using AutenticacaoJWT.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@ namespace AutenticacaoJWT.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<UserDTO>>> Get()
         {
             var users = await _userService.GetAll();
@@ -56,6 +58,25 @@ namespace AutenticacaoJWT.API.Controllers
             {
                 Token = token,
             };
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<UserToken>> Login(LoginModel loginModel)
+        {
+            var userExists = await _authenticateService.UserExists(loginModel.Email);
+            if (!userExists)
+                return Unauthorized("User doesn't exists.");
+            
+            var result = await _authenticateService.AuthenticateAsync(loginModel.Email, loginModel.Password);
+            if (!result)
+                return Unauthorized("Email or password invalid.");
+
+            var user = await _authenticateService.GetUserByEmail(loginModel.Email);
+
+            var token = _authenticateService.GenerateToken(user.Id, user.Email);
+
+            return new UserToken { Token = token, };
+
         }
     }
 }

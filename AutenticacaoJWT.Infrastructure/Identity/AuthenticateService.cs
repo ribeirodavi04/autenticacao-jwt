@@ -1,5 +1,7 @@
-﻿using AutenticacaoJWT.Domain.Interfaces;
+﻿using AutenticacaoJWT.Domain.Entities;
+using AutenticacaoJWT.Domain.Interfaces;
 using AutenticacaoJWT.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -60,6 +62,11 @@ namespace AutenticacaoJWT.Infra.Data.Identity
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return await _context.Users.Where(u => u.Email.ToLower() == email.ToLower()).FirstOrDefaultAsync();
         }
 
         public async Task<bool> UserExists(string email)
