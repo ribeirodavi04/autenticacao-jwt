@@ -34,6 +34,7 @@ namespace AutenticacaoJWT.Infra.Data.Context
                 entity.Property(e => e.Name).HasColumnName("Name"); 
                 entity.Property(e => e.Email).HasColumnName("Email"); 
                 entity.Property(e => e.Password).HasColumnName("Password"); 
+                entity.Property(e => e.Salt).HasColumnName("Salt"); 
             });
         }
     }

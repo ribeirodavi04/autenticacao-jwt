@@ -1,6 +1,7 @@
 ﻿using AutenticacaoJWT.Domain.Entities;
 using AutenticacaoJWT.Domain.Interfaces;
 using AutenticacaoJWT.Infra.Data.Context;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -25,14 +26,17 @@ namespace AutenticacaoJWT.Infra.Data.Identity
             _configuration = configuration;
         }
 
-        public async Task<bool> AuthenticateAsync(string email, string password)
+        public async Task<bool> AuthenticateAsync(string email, string passwordInput)
         {
             var user =  _context.Users.Where(u => u.Email.ToLower() == email.ToLower()).FirstOrDefault();
             
             if (user == null) 
                 return false;
+        
+            string salt = Convert.ToBase64String(user.Salt);
+            string password = EncryptPassword(passwordInput, user.Salt);
 
-            if(user.Password != password) 
+            if (user.Password != password)
                 return false;
 
             return true;
@@ -77,6 +81,18 @@ namespace AutenticacaoJWT.Infra.Data.Identity
                 return false;
 
             return true;
+        }
+
+        private string EncryptPassword(string password, byte[] salt)
+        {
+            string cryptoPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            return cryptoPassword;
         }
     }
 }

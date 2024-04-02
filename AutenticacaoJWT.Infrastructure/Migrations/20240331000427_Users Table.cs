@@ -19,7 +19,8 @@ namespace AutenticacaoJWT.Infra.Data.Migrations
                     .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
                 Name = table.Column<string>(nullable: true),
                 Email = table.Column<string>(nullable: true),
-                Password = table.Column<string>(nullable: true)
+                Password = table.Column<string>(nullable: true),
+                Salt = table.Column<byte[]>(nullable: true)
             },
             constraints: table =>
             {
