@@ -10,6 +10,7 @@ namespace AutenticacaoJWT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -41,6 +42,7 @@ namespace AutenticacaoJWT.API.Controllers
         [HttpGet("{idUser:int}")]
         public async Task<ActionResult<UserDTO>> Get(int idUser)
         {
+
             var user = await _userService.GetUserById(idUser);
             if (user == null)
                 return NotFound("Usuário não encontrado.");
@@ -51,6 +53,15 @@ namespace AutenticacaoJWT.API.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(UserDTO userDTO)
         {
+            #region verifica nível de permissão do usuário logado
+            var userIdClaim = int.Parse(User.FindFirst("id").Value);
+            var userClaim = await _userService.GetUserById(userIdClaim);
+
+            if (!userClaim.IsAdmin)
+                return Unauthorized("Você não tem permissão para atualizar este usuário.");
+            #endregion
+
+
             if (userDTO == null)
                 return BadRequest("Dados inválidos");
 
@@ -65,6 +76,15 @@ namespace AutenticacaoJWT.API.Controllers
         [HttpDelete("{idUser:int}")]
         public async Task<ActionResult> Delete(int idUser)
         {
+            #region verifica nível de permissão do usuário logado
+            var userIdClaim = int.Parse(User.FindFirst("id").Value);
+            var userClaim = await _userService.GetUserById(userIdClaim);
+
+            if(!userClaim.IsAdmin)
+                return Unauthorized("Você não tem permissão para excluir este usuário.");
+            #endregion
+
+
             var user = await _userService.DeleteUser(idUser);
 
             if (user == null)
