@@ -1,5 +1,7 @@
 ﻿using AutenticacaoJWT.Domain.Interfaces;
+using AutenticacaoJWT.Domain.Pagination;
 using AutenticacaoJWT.Infra.Data.Context;
+using AutenticacaoJWT.Infra.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,12 @@ namespace AutenticacaoJWT.Infra.Data.Repositories
         public async Task<IEnumerable<TEntity>> GetAll()
         {
             return await _entities.ToListAsync();
+        }
+
+        public async Task<PagedList<TEntity>> GetAllPagination(int pageNumber, int pageSize)
+        {
+            var query = _entities.AsQueryable();
+            return await PaginationHelper.CreateAsync(query, pageNumber, pageSize);
         }
 
         public async Task<TEntity> GetById(int id)

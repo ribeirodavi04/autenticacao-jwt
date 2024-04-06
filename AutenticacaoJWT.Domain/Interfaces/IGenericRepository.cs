@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutenticacaoJWT.Domain.Pagination;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,6 +12,7 @@ namespace AutenticacaoJWT.Domain.Interfaces
     {
         Task<TEntity> GetById(int id);
         Task<IEnumerable<TEntity>> GetAll();
+        Task<PagedList<TEntity>> GetAllPagination(int pageNumber, int pageSize);
         Task<TEntity> Create(TEntity entity);
         Task<TEntity> Update(TEntity entity);
         Task<TEntity> Remove(TEntity entity);

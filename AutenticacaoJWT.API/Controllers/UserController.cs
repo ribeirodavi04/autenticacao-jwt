@@ -1,4 +1,5 @@
-﻿using AutenticacaoJWT.API.Models;
+﻿using AutenticacaoJWT.API.Extensions;
+using AutenticacaoJWT.API.Models;
 using AutenticacaoJWT.Application.DTO;
 using AutenticacaoJWT.Application.Interfaces;
 using AutenticacaoJWT.Domain.Interfaces;
@@ -22,20 +23,19 @@ namespace AutenticacaoJWT.API.Controllers
             _authenticateService = authenticate;
         }
 
-        [HttpGet("{skip}/{take}")]
-        public async Task<ActionResult<List<UserDTO>>> Get(int skip = 0, int take = 25)
+        [HttpGet]
+        public async Task<ActionResult<List<UserDTO>>> Get([FromQuery] PaginationParams paginationParams)
         {
-            var users = await _userService.GetAllUsers();
-
-            var total = users.Count();
+            var users = await _userService.GetAllUsers(paginationParams.PageNumber, paginationParams.PageSize);
 
             if (users == null)
                 return NotFound("Usuários não encontrados.");
 
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
             return Ok(new
             {
-                total,
-                data = users.Skip(skip).Take(take)
+                Total = users.TotalCount,
+                data = users
             });
         }
 

@@ -2,6 +2,7 @@
 using AutenticacaoJWT.Application.Interfaces;
 using AutenticacaoJWT.Domain.Entities;
 using AutenticacaoJWT.Domain.Interfaces;
+using AutenticacaoJWT.Domain.Pagination;
 using AutoMapper;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
@@ -24,10 +25,12 @@ namespace AutenticacaoJWT.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<List<UserDTO>> GetAllUsers()
+        public async Task<PagedList<UserDTO>> GetAllUsers(int pageNumber, int pageSize)
         {
-            var users = await _userRepository.GetAll();
-            return _mapper.Map<List<UserDTO>>(users);
+            var users = await _userRepository.GetAllPagination(pageNumber, pageSize);
+            var usersDTO = _mapper.Map<List<UserDTO>>(users);
+
+            return new PagedList<UserDTO>(usersDTO, pageNumber, pageSize, users.TotalCount);
         }
 
         public async Task<UserDTO> GetUserById(int idUser)
