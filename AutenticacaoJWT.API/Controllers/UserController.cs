@@ -21,62 +21,59 @@ namespace AutenticacaoJWT.API.Controllers
             _authenticateService = authenticate;
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<List<UserDTO>>> Get()
+        [HttpGet("{skip}/{take}")]
+        public async Task<ActionResult<List<UserDTO>>> Get(int skip = 0, int take = 25)
         {
-            var users = await _userService.GetAll();
+            var users = await _userService.GetAllUsers();
+
             var total = users.Count();
 
             if (users == null)
-                return NotFound("Users not Found");
+                return NotFound("Usuários não encontrados.");
 
             return Ok(new
             {
                 total,
-                data = users
+                data = users.Skip(skip).Take(take)
             });
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<UserToken>> RegisterUser([FromBody] UserDTO userDTO)
+        [HttpGet("{idUser:int}")]
+        public async Task<ActionResult<UserDTO>> Get(int idUser)
+        {
+            var user = await _userService.GetUserById(idUser);
+            if (user == null)
+                return NotFound("Usuário não encontrado.");
+
+            return Ok(user);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update(UserDTO userDTO)
         {
             if (userDTO == null)
-                return BadRequest("Invalid Data");
+                return BadRequest("Dados inválidos");
 
-            var emailExists = await _authenticateService.UserExists(userDTO.Email);
+            var userUpdated = await _userService.UpdateUser(userDTO);
 
-            if (emailExists == true)
-                return BadRequest("Email already exists");
-
-            var user = await _userService.AddUser(userDTO);
-            if (user == null)
-                return BadRequest("Error while registering");
-
-            var token = _authenticateService.GenerateToken(user.Id, user.Email);
-            return new UserToken
-            {
-                Token = token,
-            };
-        }
-
-        [HttpPost("login")]
-        public async Task<ActionResult<UserToken>> Login(LoginModel loginModel)
-        {
-            var userExists = await _authenticateService.UserExists(loginModel.Email);
-            if (!userExists)
-                return Unauthorized("User doesn't exists.");
+            if (userUpdated == null)
+                return BadRequest("Erro ao atualizar usuário.");
             
-            var result = await _authenticateService.AuthenticateAsync(loginModel.Email, loginModel.Password);
-            if (!result)
-                return Unauthorized("Email or password invalid.");
-
-            var user = await _authenticateService.GetUserByEmail(loginModel.Email);
-
-            var token = _authenticateService.GenerateToken(user.Id, user.Email);
-
-            return new UserToken { Token = token, };
-
+            return Ok("Usuário atualizado com sucesso.");
         }
+
+        [HttpDelete("{idUser:int}")]
+        public async Task<ActionResult> Delete(int idUser)
+        {
+            var user = await _userService.DeleteUser(idUser);
+
+            if (user == null)
+                return BadRequest("Erro ao excluir usuário.");
+
+            return Ok("Usuário excluído com sucesso");
+        }
+
+
+        
     }
 }

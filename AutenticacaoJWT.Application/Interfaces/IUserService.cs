@@ -9,7 +9,10 @@ namespace AutenticacaoJWT.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<List<UserDTO>> GetAll();
+        Task<List<UserDTO>> GetAllUsers();
+        Task<UserDTO> GetUserById(int idUser);
         Task<UserDTO> AddUser(UserDTO userDTO);
+        Task<UserDTO> UpdateUser(UserDTO userDTO);
+        Task<UserDTO> DeleteUser(int idUser);
     }
 }

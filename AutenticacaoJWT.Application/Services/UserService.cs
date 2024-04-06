@@ -24,15 +24,21 @@ namespace AutenticacaoJWT.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<List<UserDTO>> GetAll()
+        public async Task<List<UserDTO>> GetAllUsers()
         {
             var users = await _userRepository.GetAll();
             return _mapper.Map<List<UserDTO>>(users);
         }
 
+        public async Task<UserDTO> GetUserById(int idUser)
+        {
+            var user = await _userRepository.GetById(idUser);
+            return _mapper.Map<UserDTO>(user);
+        }
+
         public async Task<UserDTO> AddUser(UserDTO userDTO)
         {
-            User user = _mapper.Map<User>(userDTO);
+            var user = _mapper.Map<User>(userDTO);
 
             byte[] salt = new byte[128 / 8];
             user.Salt = GenerateSalt(salt);
@@ -42,6 +48,38 @@ namespace AutenticacaoJWT.Application.Services
 
             var newUser = await _userRepository.Create(user);
             return _mapper.Map<UserDTO>(newUser);
+        }
+
+        public async Task<UserDTO> UpdateUser(UserDTO userDTO)
+        {
+            var user = await _userRepository.GetById(userDTO.Id);
+
+            if (user == null)
+                return null;
+
+            user.Name = userDTO.Name;
+            user.Email = userDTO.Email;
+            user.IsAdmin = userDTO.IsAdmin;
+
+            byte[] salt = new byte[128 / 8];
+            user.Salt = GenerateSalt(salt);
+
+            string cryptoPassword = EncryptPassword(userDTO.Password, user.Salt);
+            user.Password = cryptoPassword;
+
+            var userUpdate = await _userRepository.Update(user);
+            return _mapper.Map<UserDTO>(userUpdate);
+        }
+
+        public async Task<UserDTO> DeleteUser(int idUser)
+        {
+            var user = await _userRepository.GetById(idUser);
+
+            if (user == null) 
+                return null;
+                        
+            var userDeleted = await _userRepository.Remove(user);
+            return _mapper.Map<UserDTO>(userDeleted);
         }
 
         private Byte[] GenerateSalt(byte[] salt)
