@@ -23,7 +23,7 @@ namespace AutenticacaoJWT.API.Controllers
             _authenticateService = authenticate;
         }
 
-        [HttpGet]
+        [HttpGet("Users")]
         public async Task<ActionResult<List<UserDTO>>> Get([FromQuery] PaginationParams paginationParams)
         {
             var users = await _userService.GetAllUsers(paginationParams.PageNumber, paginationParams.PageSize);
